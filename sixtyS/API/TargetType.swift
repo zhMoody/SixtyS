@@ -26,14 +26,14 @@ protocol TargetType {
   var method: HTTPMethod { get }
 
   /// 请求的任务类型，决定了参数如何被编码
-  var task: Task { get }
+  var task: RequestTask { get }
 
   /// 请求头信息
   var headers: [String: String]? { get }
 }
 
 /// 定义请求参数的编码方式
-enum Task {
+enum RequestTask {
   /// 无参数的请求
   case requestPlain
 

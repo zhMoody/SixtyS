@@ -96,12 +96,23 @@ final class NetworkService {
     } catch {
       throw error
     }
-    // ✅ END: 添加 BaseResponse 解析逻辑
+  }
+  
+  
+   func fetchData<T: Decodable>(api: API) async -> LoadingState<T> {
+      do {
+          let data = try await request(api, responseType: T.self)
+          return .success(data)
+      } catch let error as APIError {
+          return .failure(error)
+      } catch let error as URLError {
+          let apiError = APIError(code: error.code.rawValue, message: "网络连接似乎有问题，请检查您的网络设置。")
+          return .failure(apiError)
+      } catch {
+          return .failure(error)
+      }
   }
 }
-
-// MARK: - 以下是依赖项，确保它们也在文件中或可以被访问
-
 
 
 /// 辅助协议，用于判断 T 是否为 Optional
