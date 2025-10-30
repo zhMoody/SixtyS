@@ -23,7 +23,7 @@ struct DouyinData: Codable, Identifiable {
   
   let title: String
   let hot_value: Int
-  let cover: URL
+  let cover: URL?
   let link: URL
   let event_time: String
   let event_time_at: Int
@@ -62,4 +62,21 @@ struct XiaohongshuData: Codable, Identifiable {
       return nil
   }
 
+}
+
+struct BiliBiliData: Codable, Identifiable {
+  var id: String { title }
+  let title: String
+  let link: URL
+  
+  var appLink: URL? {
+    guard let components = URLComponents(url: link, resolvingAgainstBaseURL: false),
+          let keywordItem = components.queryItems?.first(where: { $0.name == "keyword" }),
+          let keyword = keywordItem.value else {
+      return nil
+    }
+    
+    // 构建 Bilibili App 的搜索 URL Scheme
+    return URL(string: "bilibili://search?keyword=\(keyword)")
+  }
 }

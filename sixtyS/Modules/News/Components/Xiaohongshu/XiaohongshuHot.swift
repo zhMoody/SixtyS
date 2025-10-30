@@ -7,7 +7,19 @@
 import SwiftUI
 
 struct XiaohongshuHot: View {
+  
+  
   @StateObject private var viewModel = NewsViewModel.shared
+  @Environment(\.openURL) private var openURL
+  
+  private func openXiaohongshu(data: XiaohongshuData) {
+    if let appURL = data.appLink, UIApplication.shared.canOpenURL(appURL) {
+      openURL(appURL)
+    } else {
+      openURL(data.link)
+    }
+  }
+  
   var body: some View {
     LoadingStateView(
       loadingState: viewModel.xiaohongshuHot,
@@ -32,6 +44,9 @@ struct XiaohongshuHot: View {
                   .font(.caption2)
                   .foregroundStyle(.red)
             }
+          }
+          .onTapGesture {
+            openXiaohongshu(data: item)
           }
         }
       }

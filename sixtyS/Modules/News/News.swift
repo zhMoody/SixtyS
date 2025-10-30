@@ -33,35 +33,37 @@ struct NewsView: View {
       .padding(.horizontal)
       .padding(.top, 60)
       .padding(.bottom, 10)
-        
-        Divider()
-        
-        TabView(selection: $selectedIndex) {
-          ForEach(Array(HotSearchCategory.allCases.enumerated()), id: \.offset) { index, title in
-            switch title {
-            case .sixtyHot:
-              SixtyHot()
-                .tag(index)
-            case .douyinHot:
-              DouyinHot()
-                .tag(index)
-            case .xiaohongshuHot:
-              XiaohongshuHot()
-                .tag(index)
-             case .bilibiliHot,
-                .weiboHot,
-                .baiduHot,
-                .baidutiebaHot,
-                .zhihuHot,
-                .dongcediHot,
-                .hackernewsHot:
-              Text("hello world")
-                .tag(index)
-            }
+      
+      Divider()
+      
+      TabView(selection: $selectedIndex) {
+        ForEach(Array(HotSearchCategory.allCases.enumerated()), id: \.offset) { index, title in
+          switch title {
+          case .sixtyHot:
+            SixtyHot()
+              .tag(index)
+          case .douyinHot:
+            DouyinHot()
+              .tag(index)
+          case .xiaohongshuHot:
+            XiaohongshuHot()
+              .tag(index)
+          case .bilibiliHot:
+            BiliBiliHot()
+              .tag(index)
+          case .weiboHot,
+              .baiduHot,
+              .baidutiebaHot,
+              .zhihuHot,
+              .dongcediHot,
+              .hackernewsHot:
+            Text("hello world")
+              .tag(index)
           }
         }
-        .tabViewStyle(.page(indexDisplayMode: .never))
       }
+      .tabViewStyle(.page(indexDisplayMode: .never))
+    }
     .ignoresSafeArea()
   }
 }

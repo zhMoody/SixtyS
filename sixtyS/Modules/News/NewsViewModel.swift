@@ -15,11 +15,13 @@ class NewsViewModel: ObservableObject {
   @Published var dailyNews: LoadingState<DailyNewsData> = .awaitingPermission
   @Published var douyinHot: LoadingState<[DouyinData]> = .awaitingPermission
   @Published var xiaohongshuHot: LoadingState<[XiaohongshuData]> = .awaitingPermission
+  @Published var bilibiliHot: LoadingState<[BiliBiliData]> = .awaitingPermission
   
   private var hasLoadedDailyNews = false
   private var hasLoadedDouyinHot = false
   private var hasLoadedXiaohongshuHot = false
-  
+  private var hasLoadedBiliBiliHot = false
+
   private let networkService = NetworkService.shared
   private init() {}
   
@@ -60,5 +62,16 @@ class NewsViewModel: ObservableObject {
     }
   }
   
+  func fetchBiliBiliHot() async {
+    guard !hasLoadedBiliBiliHot else { return }
+    bilibiliHot = .loading
+    
+    let result: LoadingState<[BiliBiliData]> = await networkService.fetchData(api: API.bilibiliHotSearch)
+    bilibiliHot = result
+    
+    if case .success = result {
+      hasLoadedBiliBiliHot = true
+    }
+  }
   
 }

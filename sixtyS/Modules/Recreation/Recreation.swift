@@ -8,11 +8,46 @@
 import SwiftUI
 
 struct Recreation: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+  @StateObject private var viewModel = RecreationViewModel.shared
+  @State private var showDetail: EpicFreeGame?
+  
+  var body: some View {
+    NavigationView {
+      ZStack {
+        LoadingStateView(
+          loadingState: viewModel.epicFreeGames,
+          onRefresh: {
+            await viewModel.fetchEpicFreeGames()
+          }
+        ) { data in
+          List {
+            ForEach(data) { item in
+              EpicGameRow(game: item)
+                .onTapGesture {
+                  showDetail = item
+                }
+                .listRowInsets(EdgeInsets())
+                .listRowSeparator(.hidden)
+                .padding(.horizontal)
+                .padding(.vertical, 8)
+            }
+          }
+          .listStyle(.plain)
+          .scrollContentBackground(.hidden)
+        }
+        .navigationTitle("Epic 本周免费")
+        .navigationBarTitleDisplayMode(.large)
+      }
     }
+    .sheet(item: $showDetail) { item in
+      EpicFreeGameView(game: item)
+    }
+    .task {
+      await viewModel.fetchEpicFreeGames()
+    }
+  }
 }
 
 #Preview {
-    Recreation()
+  Recreation()
 }
