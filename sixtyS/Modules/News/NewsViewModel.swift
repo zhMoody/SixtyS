@@ -16,11 +16,20 @@ class NewsViewModel: ObservableObject {
   @Published var douyinHot: LoadingState<[DouyinData]> = .awaitingPermission
   @Published var xiaohongshuHot: LoadingState<[XiaohongshuData]> = .awaitingPermission
   @Published var bilibiliHot: LoadingState<[BiliBiliData]> = .awaitingPermission
+  @Published var baiduHot: LoadingState<[BaiduHotData]> = .awaitingPermission
+  @Published var baiduTiebaHot: LoadingState<[BaiduTiebaData]> = .awaitingPermission
+  @Published var zhihuHot: LoadingState<[ZhihuData]> = .awaitingPermission
+  @Published var dongchediHot: LoadingState<[DongchediData]> = .awaitingPermission
+
   
   private var hasLoadedDailyNews = false
   private var hasLoadedDouyinHot = false
   private var hasLoadedXiaohongshuHot = false
   private var hasLoadedBiliBiliHot = false
+  private var hasLoadedBaiduHot = false
+  private var hasLoadedBaiduTiebaHot = false
+  private var hasLoadedZhihuHot = false
+  private var hasLoadedDongchedi = false
 
   private let networkService = NetworkService.shared
   private init() {}
@@ -74,4 +83,51 @@ class NewsViewModel: ObservableObject {
     }
   }
   
+  func fetchBaiduHot() async {
+    guard !hasLoadedBaiduHot else { return }
+    baiduHot = .loading
+    
+    let result: LoadingState<[BaiduHotData]> = await networkService.fetchData(api: API.baiduHotSearch)
+    baiduHot = result
+    
+    if case .success = result {
+      hasLoadedBaiduHot = true
+    }
+  }
+  
+  func fetchBaiduTiebaHot() async {
+    guard !hasLoadedBaiduTiebaHot else { return }
+    baiduTiebaHot = .loading
+    
+    let result: LoadingState<[BaiduTiebaData]> = await networkService.fetchData(api: API.baiduTiebaTopics)
+    baiduTiebaHot = result
+    
+    if case .success = result {
+      hasLoadedBaiduTiebaHot = true
+    }
+  }
+  
+  func fetchZhihuHot() async {
+    guard !hasLoadedZhihuHot else { return }
+    zhihuHot = .loading
+    
+    let result: LoadingState<[ZhihuData]> = await networkService.fetchData(api: API.zhihuTopics)
+    zhihuHot = result
+    
+    if case .success = result {
+      hasLoadedZhihuHot = true
+    }
+  }
+  
+  func fetchDongchediHot() async {
+    guard !hasLoadedDongchedi else { return }
+    dongchediHot = .loading
+    
+    let result: LoadingState<[DongchediData]> = await networkService.fetchData(api: API.dongchediHot)
+    dongchediHot = result
+    
+    if case .success = result {
+      hasLoadedDongchedi = true
+    }
+  }
 }

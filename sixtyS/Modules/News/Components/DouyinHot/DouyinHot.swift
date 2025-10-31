@@ -14,39 +14,22 @@ struct DouyinHot: View {
       loadingState: viewModel.douyinHot,
       onRefresh: { await viewModel.fetchDouyinHot() }
     ) { data in
-      // 2. 在这里的尾随闭包中，只用关心成功状态的 UI
-      // 这个闭包会接收到成功状态下的数据 (data)
       List {
-        ForEach(data) { item in
-          HStack {
-            AsyncImage(url: item.cover) { image in
-              image.resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: 48, height: 48)
-                .clipShape(.rect(cornerRadius: 8))
-                .clipped()
-            } placeholder: {
-              ProgressView()
+        ForEach(Array(data.enumerated()), id: \.element.id) {index, item in
+          DouyinHotRow(rank: index + 1, item: item)
+            .onTapGesture {
+              showDetail = item
             }
-            VStack(alignment: .leading,spacing: 10) {
-              Text("\(item.title)")
-                .font(.body)
-              HStack {
-                Text("\(item.active_time)")
-                  .font(.caption2)
-                Spacer()
-                Label("\(item.hot_value)", systemImage: "flame.fill")
-                  .font(.caption2)
-                  .foregroundStyle(.red)
-              }
-            }
-          }
-          .onTapGesture {
-            showDetail = item
-          }
+            .listRowInsets(EdgeInsets())
+            .listRowSeparator(.hidden)
+            .padding(.vertical, 4)
+            .padding(.trailing)
         }
       }
-      .listStyle(.plain) // 推荐设置一个样式
+      .listStyle(.plain)
+      .refreshable {
+        await viewModel.fetchDouyinHot()
+      }
     }
     .sheet(item: $showDetail, onDismiss: {}) { douyinData in
       DouyinHotDetail(douyindata: douyinData)

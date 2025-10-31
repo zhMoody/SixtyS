@@ -99,7 +99,6 @@ struct DouyinHotDetail: View {
           
           // MARK: - 底部按钮
           Button(action: {
-            // 调用跳转方法
             openDouyin()
           }) {
             Label("前往抖音查看", systemImage: "arrow.up.right.square.fill")

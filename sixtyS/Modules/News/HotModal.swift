@@ -12,10 +12,8 @@ enum HotSearchCategory: String, CaseIterable, Identifiable {
   case douyinHot = "抖音"
   case xiaohongshuHot = "小红书"
   case bilibiliHot = "BiliBili"
-  case weiboHot = "微博"
   case baiduHot = "百度实时"
   case baidutiebaHot = "百度贴吧"
   case zhihuHot = "知乎"
   case dongcediHot = "懂车帝"
-  case hackernewsHot = "Hacker News"
 }

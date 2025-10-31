@@ -20,8 +20,6 @@ enum API {
   case xiaohongshuHot
   /// 哔哩哔哩热搜
   case bilibiliHotSearch
-  /// 微博热搜
-  case weiboHotSearch
   /// 百度实时热搜
   case baiduHotSearch
   /// 百度贴吧话题榜
@@ -32,8 +30,6 @@ enum API {
   case zhihuTopics
   /// 懂车帝热搜
   case dongchediHot
-  /// Hacker News 热帖
-  case hackerNews(type: String)
   
   // MARK: - 娱乐
   /// Epic Games 游戏
@@ -78,13 +74,11 @@ extension API: TargetType {
     case .douyinHotSearch: return "/v2/douyin"
     case .xiaohongshuHot: return "/v2/rednote"
     case .bilibiliHotSearch: return "/v2/bili"
-    case .weiboHotSearch: return "/v2/weibo"
     case .baiduHotSearch: return "/v2/baidu/hot"
     case .baiduTiebaTopics: return "/v2/baidu/tieba"
     case .toutiaoHotSearch: return "/v2/toutiao"
     case .zhihuTopics: return "/v2/zhihu"
     case .dongchediHot: return "/v2/dongchedi"
-    case .hackerNews(let type): return "/v2/hacker-news/\(type)"
       // MARK: - 娱乐
     case .epicGamesFree: return "/v2/epic"
     case .baiduTvSeriesList: return "/v2/baidu/teleplay"

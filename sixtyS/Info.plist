@@ -6,6 +6,10 @@
 	<array>
 		<string>snssdk1128</string>
 		<string>xiaohongshu</string>
+		<string>bilibili</string>
+		<string>baiduboxapp</string>
+		<string>baidu-tieba-na</string>
+		<string>dongchedi</string>
 	</array>
 </dict>
 </plist>

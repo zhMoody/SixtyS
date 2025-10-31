@@ -12,7 +12,7 @@ struct XiaohongshuHot: View {
   @StateObject private var viewModel = NewsViewModel.shared
   @Environment(\.openURL) private var openURL
   
-  private func openXiaohongshu(data: XiaohongshuData) {
+  private func openXiaohongshu(for data: XiaohongshuData) {
     if let appURL = data.appLink, UIApplication.shared.canOpenURL(appURL) {
       openURL(appURL)
     } else {
@@ -27,28 +27,20 @@ struct XiaohongshuHot: View {
     ) { data in
       List {
         ForEach(data) { item in
-          HStack {
-//            AsyncImage(url: URL(string: item.work_type_icon)) { image in
-//              image.resizable()
-//                .aspectRatio(contentMode: .fill)
-//                .frame(width: 48, height: 48)
-//                .clipShape(.rect(cornerRadius: 8))
-//                .clipped()
-//            } placeholder: {
-//              ProgressView()
-//            }
-            VStack(alignment: .leading,spacing: 10) {
-              Text("\(item.title)")
-                .font(.body)
-                Label("\(item.score)", systemImage: "flame.fill")
-                  .font(.caption2)
-                  .foregroundStyle(.red)
+          XiaohongshuHotRow(item: item)
+            .onTapGesture {
+              openXiaohongshu(for: item)
             }
-          }
-          .onTapGesture {
-            openXiaohongshu(data: item)
-          }
+            .listRowInsets(EdgeInsets())
+            .listRowSeparator(.hidden)
+            .padding(.horizontal)
+            .padding(.vertical, 4)
+          
         }
+      }
+      .listStyle(.plain)
+      .refreshable {
+        await viewModel.fetchXiaohongshuHot()
       }
     }
     .task {
